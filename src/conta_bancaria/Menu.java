@@ -5,28 +5,23 @@ import java.util.Scanner;
 import conta_bancaria.util.Cores;
 
 public class Menu {
-	
-	static ArrayList<String> nomes = new ArrayList<String>();
-	static ArrayList<Integer> agencias = new ArrayList<Integer>();
-	static ArrayList<Integer> contas = new ArrayList<Integer>();
-	static Scanner leia = new Scanner(System.in);
+
 	static String nomeOperacao = "";
 
+	static Scanner leia = new Scanner(System.in);
+
+	static ArrayList<conta> contas = new ArrayList<>();
+
 	public static void main(String[] args) {
-		
-		float saldo = 0.0f;
 
 		boolean sair = false;
 
 		while (sair == false) {
+
 			System.out.println("*** Banco Lavagem de dinheiro S2 Vorcaro ***");
-			System.out.println("Bem-vindo ao Banco Lavagem de dinheiro S2 Vorcaro");
 			System.out.println("Onde seu dinheiro esta sempre protegido, no meu bolso!!");
-
-			System.out.println("\n*****************************************");
 			System.out.println("       BLDV - Evite sacar S2   ");
-			System.out.print("*****************************************\n");
-
+			System.out.println("*****************************************");
 			System.out.println("          1 - Criar Conta");
 			System.out.println("          2 - Listar Todas as Contas");
 			System.out.println("          3 - Consultar Dados da Conta");
@@ -36,32 +31,39 @@ public class Menu {
 			System.out.println("          7 - Deposito");
 			System.out.println("          8 - Transferência entre Contas");
 			System.out.println("          9 - Sair");
-
-			System.out.println("\n*****************************************");
+			System.out.println("*****************************************");
 
 			System.out.print("Entre com a opção desejada: ");
 			int operacao = leia.nextInt();
 
-
 			switch (operacao) {
 			case 1:
+				nomeOperacao = "Criar Conta";
+				System.out.printf("\nNome da operacao: %s", nomeOperacao);
 				novaconta();
 				break;
-				
+
 			case 2:
 				nomeOperacao = "Listar Todas as Contas";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
+				System.out.printf("\nNome da operacao: %s", nomeOperacao);
+
+				listarcontas();
+				voltarMenu();
 				break;
 			case 3:
-				nomeOperacao = "Consultar Dados da Conta";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
+				nomeOperacao = "Consultar Conta";
+				System.out.printf("\nNome da operacao: %s", nomeOperacao);
+
+				consultarconta();
+				voltarMenu();
+
 				break;
 			case 4:
 				nomeOperacao = "Atualizar Dados da Conta";
 				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
+				atualizarconta();
+				voltarMenu();
+
 				break;
 			case 5:
 				nomeOperacao = "Apagar a Conta";
@@ -72,22 +74,12 @@ public class Menu {
 			case 6:
 				nomeOperacao = "Saque";
 				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.println("\nDigite o valor do saque: ");
-				float saque = leia.nextFloat();
-				if (saque > saldo) {
-					System.out.println("Saldo insuficiente");
-				} else {
-					saldo = saldo - saque;
-					System.out.printf("Saque Efetuado! \nSaldo Atual R$%.2f", saldo);
-				}
+
 				break;
 			case 7:
 				nomeOperacao = "Deposito";
 				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("\nDigite valor a ser depositado: ");
-				float deposito = leia.nextFloat();
-				saldo = saldo + deposito;
-				System.out.printf("Saldo atual: R$%.2f", saldo);
+
 				break;
 			case 8:
 				nomeOperacao = "Transferência entre Contas";
@@ -109,42 +101,147 @@ public class Menu {
 		}
 
 	}
-	
-	public static void novaconta(){
-		nomeOperacao = "Criar Conta";
+
+	public static void novaconta() {
 		boolean confirma = false;
-		while(confirma == false) {
-		System.out.printf("Nome da operacao: %s", nomeOperacao);
-		System.out.printf("\nDigite seu nome: ");
-		String novoNome = leia.next();
-		
-		System.out.printf("\nDigite sua Agência: ");
-		int novaAgencia = leia.nextInt();
-		
-		System.out.println("\nDigite o numero da conta: ");
-		int numeroConta = leia.nextInt();
-		
-		System.out.println("Confirme os Dados ");
-		System.out.println("\nNome: " + novoNome);
-		System.out.println("Agência: " + novaAgencia);
-		System.out.println("Número da Conta: " + numeroConta);
-		
-		System.out.println("\nOs dados estão corretos: (S/N)");
-		String sn = leia.next();
-		
-		if (sn.equalsIgnoreCase("S")) {
-			nomes.add(novoNome);
-			agencias.add(novaAgencia);
-			contas.add(numeroConta);
-			System.out.println("Conta criada com sucesso!!\n");
-			confirma = true;
+
+		while (!confirma) {
+
+			System.out.printf("\nDigite seu nome: ");
+			String novoNome = leia.next();
+
+			System.out.printf("\nDigite sua Agência: ");
+			int novaAgencia = leia.nextInt();
+
+			System.out.println("\nDigite o numero da conta: ");
+			int numeroConta = leia.nextInt();
+
+			System.out.println("\nDigite o saldo da conta: ");
+			float novoSaldo = leia.nextFloat();
+
+			System.out.println("\nConfirme os Dados ");
+			System.out.println("\nNome: " + novoNome);
+			System.out.println("Agência: " + novaAgencia);
+			System.out.println("Número da Conta: " + numeroConta);
+			System.out.println("Saldo: " + novoSaldo);
+
+			System.out.println("\nOs dados estão corretos: (S/N)");
+			String sn = leia.next();
+
+			if (sn.equalsIgnoreCase("S")) {
+				conta novaConta = new conta(novoNome, novaAgencia, numeroConta, novoSaldo);
+
+				contas.add(novaConta);
+
+				System.out.println("Conta criada com sucesso!!\n");
+				confirma = true;
+			}
+		}
+		voltarMenu();
+
+	}
+
+	public static void listarcontas() {
+
+		if (contas.isEmpty()) {
+			System.out.println("\nNão existem contas");
 		} else {
-			confirma = false;
+			for (var c : contas) {
+				System.out.println("\n" + c.nome);
+
+			}
 		}
+
+	}
+
+	public static void consultarconta() {
+		listarcontas();
+
+		System.out.println("Digite o nome da Conta que deseja consultar: ");
+		String nomeC = leia.next();
+
+		boolean contaEncontrada = false;
+
+		for (conta c : contas) {
+			if (c.nome.equalsIgnoreCase(nomeC)) {
+				System.out.println("\n=== CONTA ENCONTRADA ===");
+				System.out.println("Nome: " + c.nome);
+				System.out.println("Agência: " + c.agencia);
+				System.out.println("Número: " + c.numeroConta);
+				System.out.println("Saldo: " + c.saldo);
+				contaEncontrada = true;
+			}
+			if (!contaEncontrada) {
+				System.out.println("Conta não encontrada!");
+			}
+
 		}
-		
-		
-		
+
+	}
+
+	public static void atualizarconta() {
+		listarcontas();
+
+		System.out.println("Digite o nome da Conta que deseja atualizarr: ");
+		String nomeC = leia.next();
+
+		boolean contaEncontrada = false;
+
+		for (conta c : contas) {
+			if (c.nome.equalsIgnoreCase(nomeC)) {
+				System.out.println("Nome: " + c.nome);
+				System.out.println("Agência: " + c.agencia);
+				System.out.println("Número: " + c.numeroConta);
+				System.out.println("Saldo: " + c.saldo);
+
+				boolean confirmaDados = false;
+				while (!confirmaDados) {
+					System.out.println("Digite o novo nome: ");
+					String novoNome = leia.next();
+
+					System.out.println("Digite a nova agencia: ");
+					int novaAgencia = leia.nextInt();
+
+					System.out.println("Digite o novo numero da conta: ");
+					int novaConta = leia.nextInt();
+
+					System.out.println("Confirme os dados");
+					System.out.println("novo nome: " + novoNome);
+					System.out.println("nova agencia: " + novaAgencia);
+					System.out.println("novo numero da conta: " + novaConta);
+					System.out.println("Os novo dados estão certos? (S/N)");
+					String sn = leia.next();
+
+					if (sn.equalsIgnoreCase("S")) {
+						c.nome = novoNome;
+						c.agencia = novaAgencia;
+						c.numeroConta = novaConta;
+						System.out.println("Conta Atualizada");
+
+					}
+
+				}
+
+				contaEncontrada = true;
+			}
+			if (!contaEncontrada) {
+				System.out.println("Conta não encontrada!");
+			}
+
+		}
+
+	}
+
+	public static void voltarMenu() {
+		boolean voltarMenu = false;
+		while (!voltarMenu) {
+			System.out.println("Deseja voltar ao menu? (S/N)");
+			String sn = leia.next();
+
+			if (sn.equalsIgnoreCase("S")) {
+				voltarMenu = true;
+			}
+		}
 	}
 
 	public static void sobre() {
