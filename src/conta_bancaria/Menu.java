@@ -1,7 +1,8 @@
 package conta_bancaria;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Scanner;
+import conta_bancaria.model.Conta;
 import conta_bancaria.util.Cores;
 
 public class Menu {
@@ -10,7 +11,7 @@ public class Menu {
 
 	static Scanner leia = new Scanner(System.in);
 
-	static ArrayList<conta> contas = new ArrayList<>();
+	static ArrayList<Conta> contas = new ArrayList<>();
 
 	public static void main(String[] args) {
 
@@ -115,6 +116,9 @@ public class Menu {
 
 			System.out.println("\nDigite o numero da conta: ");
 			int numeroConta = leia.nextInt();
+			
+			System.out.println("\nDigite o tipo da conta: ");
+			int novoTipo = leia.nextInt();
 
 			System.out.println("\nDigite o saldo da conta: ");
 			float novoSaldo = leia.nextFloat();
@@ -129,7 +133,7 @@ public class Menu {
 			String sn = leia.next();
 
 			if (sn.equalsIgnoreCase("S")) {
-				conta novaConta = new conta(novoNome, novaAgencia, numeroConta, novoSaldo);
+				Conta novaConta = new Conta(novoNome, novaAgencia, numeroConta, novoSaldo, novoTipo);
 
 				contas.add(novaConta);
 
@@ -147,7 +151,7 @@ public class Menu {
 			System.out.println("\nNão existem contas");
 		} else {
 			for (var c : contas) {
-				System.out.println("\n" + c.nome);
+				System.out.println("\n" + c.getNome());
 
 			}
 		}
@@ -162,13 +166,13 @@ public class Menu {
 
 		boolean contaEncontrada = false;
 
-		for (conta c : contas) {
-			if (c.nome.equalsIgnoreCase(nomeC)) {
+		for (Conta c : contas) {
+			if (c.getNome().equalsIgnoreCase(nomeC)) {
 				System.out.println("\n=== CONTA ENCONTRADA ===");
-				System.out.println("Nome: " + c.nome);
-				System.out.println("Agência: " + c.agencia);
-				System.out.println("Número: " + c.numeroConta);
-				System.out.println("Saldo: " + c.saldo);
+				System.out.println("Nome: " + c.getNome());
+				System.out.println("Agência: " + c.getAgencia());
+				System.out.println("Número: " + c.getNumeroConta());
+				System.out.println("Saldo: " + c.getSaldo());
 				contaEncontrada = true;
 			}
 			if (!contaEncontrada) {
@@ -187,12 +191,12 @@ public class Menu {
 
 		boolean contaEncontrada = false;
 
-		for (conta c : contas) {
-			if (c.nome.equalsIgnoreCase(nomeC)) {
-				System.out.println("Nome: " + c.nome);
-				System.out.println("Agência: " + c.agencia);
-				System.out.println("Número: " + c.numeroConta);
-				System.out.println("Saldo: " + c.saldo);
+		for (Conta c : contas) {
+			if (c.getNome().equalsIgnoreCase(nomeC)) {
+				System.out.println("Nome: " + c.getNome());
+				System.out.println("Agência: " + c.getAgencia());
+				System.out.println("Número: " + c.getNumeroConta());
+				System.out.println("Saldo: " + c.getSaldo());
 
 				boolean confirmaDados = false;
 				while (!confirmaDados) {
@@ -213,10 +217,11 @@ public class Menu {
 					String sn = leia.next();
 
 					if (sn.equalsIgnoreCase("S")) {
-						c.nome = novoNome;
-						c.agencia = novaAgencia;
-						c.numeroConta = novaConta;
+						c.setNome(novoNome);
+						c.setAgencia(novaAgencia);
+						c.setNumeroConta(novaConta);
 						System.out.println("Conta Atualizada");
+						confirmaDados = true;
 
 					}
 
