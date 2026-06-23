@@ -2,30 +2,31 @@ package conta_bancaria.model;
 
 public class Conta {
 
-	private String nome;
+	/* Atributos da Classe*/
+	private int numero;
 	private int agencia;
-	private int numeroConta;
-	private float saldo;
 	private int tipo;
-
-	public Conta(String nome, int agencia, int numeroConta, float saldo, int tipo) {
-		this.nome = nome;
+	private String titular;
+	private float saldo;
+	
+	/* Método Construtor - Gerar as instâncias (Objetos) da Classe*/
+	public Conta(int numero, int agencia, int tipo, String titular, float saldo) {
+		this.numero = numero;
 		this.agencia = agencia;
-		this.numeroConta = numeroConta;
-		this.saldo = saldo;
 		this.tipo = tipo;
+		this.titular = titular;
+		this.saldo = saldo;
 	}
 	
-	public Conta() {
-		
+	//public Conta() {}
+
+	public int getNumero() {
+		return numero;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	/* Métodos Get (visualizar os dados) e Set (Modificar os dados)*/
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 	public int getAgencia() {
@@ -36,12 +37,20 @@ public class Conta {
 		this.agencia = agencia;
 	}
 
-	public int getNumeroConta() {
-		return numeroConta;
+	public int getTipo() {
+		return tipo;
 	}
 
-	public void setNumeroConta(int numeroConta) {
-		this.numeroConta = numeroConta;
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getTitular() {
+		return titular;
+	}
+
+	public void setTitular(String titular) {
+		this.titular = titular;
 	}
 
 	public float getSaldo() {
@@ -51,37 +60,44 @@ public class Conta {
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
-
-	public int getTipo() {
-		return tipo;
+	
+	// Métodos Auxiliares
+	
+	public boolean sacar(float valor) {
+		
+		if (this.saldo < valor)
+			return false;
+		
+		this.saldo -= valor;
+		return true;
 	}
-
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
+	
+	public void depositar(float valor) {
+		this.saldo += valor;
 	}
 	
 	public void visualizar() {
 		
 		String tipo = "";
+		
 		switch(this.tipo) {
-			
-		case 1: 
-			tipo = "Conta Corrente";
+			case 1:
+				tipo = "Conta Corrente";
 			break;
-		case 2:
-			tipo = "Conta Poupança";
+			case 2: 
+				tipo = "Conta Poupança";
 			break;
 		}
 		
-		System.out.println("******************************************");
-		System.out.println("             DADOS DA CONTA");
-		System.out.println("******************************************");
-		System.out.printf("Número da conta: %d%n", this.numeroConta);
-		System.out.printf("Número da agencia: %d%n", this.agencia);
-		System.out.printf("Tipo conta: %s%n", tipo);
-		System.out.printf("Nome do titular: %s%n", this.nome);
+		System.out.println("*******************************************************");
+		System.out.println("                    DADOS DA CONTA                     ");
+		System.out.println("*******************************************************");
+		System.out.printf("Número da conta: %d%n", this.numero);
+		System.out.printf("Número da agência: %d%n", this.agencia);
+		System.out.printf("Tipo da conta: %s%n", tipo);
+		System.out.printf("Nome do titular: %s%n", this.titular);
 		System.out.printf("Saldo da conta: %.2f%n", this.saldo);
-		
 	}
+	
+	
 }
-

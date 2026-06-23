@@ -1,250 +1,134 @@
 package conta_bancaria;
 
-import java.util.ArrayList; 
 import java.util.Scanner;
+
 import conta_bancaria.model.Conta;
+import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.util.Cores;
 
 public class Menu {
-
-	static String nomeOperacao = "";
-
-	static Scanner leia = new Scanner(System.in);
-
-	static ArrayList<Conta> contas = new ArrayList<>();
-
 	public static void main(String[] args) {
 
-		boolean sair = false;
+		Scanner leia = new Scanner(System.in);
 
-		while (sair == false) {
+		int opcao;
 
-			System.out.println("*** Banco Lavagem de dinheiro S2 Vorcaro ***");
-			System.out.println("Onde seu dinheiro esta sempre protegido, no meu bolso!!");
-			System.out.println("       BLDV - Evite sacar S2   ");
-			System.out.println("*****************************************");
-			System.out.println("          1 - Criar Conta");
-			System.out.println("          2 - Listar Todas as Contas");
-			System.out.println("          3 - Consultar Dados da Conta");
-			System.out.println("          4 - Atualizar Dados da Conta");
-			System.out.println("          5 - Apagar a Conta");
-			System.out.println("          6 - Saque");
-			System.out.println("          7 - Deposito");
-			System.out.println("          8 - Transferência entre Contas");
-			System.out.println("          9 - Sair");
-			System.out.println("*****************************************");
+		/* Instanciar Objetos da Classe Conta */
 
-			System.out.print("Entre com a opção desejada: ");
-			int operacao = leia.nextInt();
+		Conta c1 = new Conta(1, 123, 1, "Isabella", 200000.00f);
+		c1.visualizar();
 
-			switch (operacao) {
+		Conta c2 = new Conta(2, 123, 2, "Thiago", 100000.00f);
+		c2.visualizar();
+
+		/* Alteração do Saldo */
+		c1.setSaldo(300000.00f);
+		c1.setTitular("Isabella Bruno");
+		c1.visualizar();
+
+		/**
+		 * Saque na conta c2 if ternário
+		 * 
+		 * condição ? ação se for verdadeiro : ação se for falso
+		 */
+
+		System.out.println("\nSacar R$ 1.000,00 da conta C2: "
+				+ (c2.sacar(1000.00f) ? "Saque efetuado com sucesso!" : "Saldo Insuficiente"));
+
+		System.out.println("\nSacar R$ 300.000,00 da conta C2: "
+				+ (c2.sacar(300000.00f) ? "Saque efetuado com sucesso!" : "Saldo Insuficiente"));
+
+		c2.visualizar();
+
+		/* Depósito na Conta c2 */
+
+		c2.depositar(50000.00f);
+		c2.visualizar();
+
+		/* Instanciar Objetos da Classe ContaCorrente */
+
+		ContaCorrente cc1 = new ContaCorrente(3, 789, 1, "Raquel", 200000.00f, 2000.00f);
+		cc1.visualizar();
+
+		System.out.println("\nSacar R$ 203.000,00 da conta Cc1: "
+				+ (cc1.sacar(203000.00f) ? "Saque efetuado com sucesso! | Saldo: " + cc1.getSaldo()
+						: "Saldo Insuficiente | Saldo: " + cc1.getSaldo()));
+
+		System.out.println("\nSacar R$ 202.000,00 da conta Cc1: "
+				+ (cc1.sacar(202000.00f) ? "Saque efetuado com sucesso! | Saldo: " + cc1.getSaldo()
+						: "Saldo Insuficiente | Saldo: " + cc1.getSaldo()));
+
+		cc1.depositar(2000.00f);
+		cc1.visualizar();
+
+		while (true) {
+
+			System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + Cores.ANSI_BLACK_BACKGROUND
+					+ "*****************************************************");
+			System.out.println("                                                     ");
+			System.out.println("              BANCO LAVAGEM DE DINHEIRO              ");
+			System.out.println("                                                     ");
+			System.out.println("*****************************************************");
+			System.out.println("                                                     ");
+			System.out.println("            1 - Criar Conta                          ");
+			System.out.println("            2 - Listar todas as Contas               ");
+			System.out.println("            3 - Buscar Conta por Numero              ");
+			System.out.println("            4 - Atualizar Dados da Conta             ");
+			System.out.println("            5 - Apagar Conta                         ");
+			System.out.println("            6 - Sacar                                ");
+			System.out.println("            7 - Depositar                            ");
+			System.out.println("            8 - Transferir valores entre Contas      ");
+			System.out.println("            0 - Sair                                 ");
+			System.out.println("                                                     ");
+			System.out.println("*****************************************************");
+			System.out.println("Entre com a opção desejada:                          ");
+			System.out.println("                                                     " + Cores.TEXT_RESET);
+
+			opcao = leia.nextInt();
+
+			if (opcao == 0) {
+				System.out.println(Cores.TEXT_WHITE_BOLD + "\nBanco Lavagem de Dinheiro - O seu Dinheiro está seguro!");
+				sobre();
+				leia.close();
+				System.exit(0);
+			}
+
+			switch (opcao) {
 			case 1:
-				nomeOperacao = "Criar Conta";
-				System.out.printf("\nNome da operacao: %s", nomeOperacao);
-				novaconta();
+				System.out.println(Cores.TEXT_WHITE + "Criar Conta\n\n");
+
 				break;
-
 			case 2:
-				nomeOperacao = "Listar Todas as Contas";
-				System.out.printf("\nNome da operacao: %s", nomeOperacao);
+				System.out.println(Cores.TEXT_WHITE + "Listar todas as Contas\n\n");
 
-				listarcontas();
-				voltarMenu();
 				break;
 			case 3:
-				nomeOperacao = "Consultar Conta";
-				System.out.printf("\nNome da operacao: %s", nomeOperacao);
-
-				consultarconta();
-				voltarMenu();
+				System.out.println(Cores.TEXT_WHITE + "Consultar dados da Conta - por número\n\n");
 
 				break;
 			case 4:
-				nomeOperacao = "Atualizar Dados da Conta";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				atualizarconta();
-				voltarMenu();
+				System.out.println(Cores.TEXT_WHITE + "Atualizar dados da Conta\n\n");
 
 				break;
 			case 5:
-				nomeOperacao = "Apagar a Conta";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
-				break;
+				System.out.println(Cores.TEXT_WHITE + "Apagar a Conta\n\n");
 
+				break;
 			case 6:
-				nomeOperacao = "Saque";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
+				System.out.println(Cores.TEXT_WHITE + "Saque\n\n");
 
 				break;
 			case 7:
-				nomeOperacao = "Deposito";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
+				System.out.println(Cores.TEXT_WHITE + "Depósito\n\n");
 
 				break;
 			case 8:
-				nomeOperacao = "Transferência entre Contas";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
-				break;
+				System.out.println(Cores.TEXT_WHITE + "Transferência entre Contas\n\n");
 
-			case 9:
-				nomeOperacao = "Sair";
-				System.out.printf("Nome da operacao: %s", nomeOperacao);
-				System.out.printf("");
-				sair = true;
 				break;
-
 			default:
-				System.out.print("operacao invalida!");
-
-			}
-		}
-
-	}
-
-	public static void novaconta() {
-		boolean confirma = false;
-
-		while (!confirma) {
-
-			System.out.printf("\nDigite seu nome: ");
-			String novoNome = leia.next();
-
-			System.out.printf("\nDigite sua Agência: ");
-			int novaAgencia = leia.nextInt();
-
-			System.out.println("\nDigite o numero da conta: ");
-			int numeroConta = leia.nextInt();
-			
-			System.out.println("\nDigite o tipo da conta: ");
-			int novoTipo = leia.nextInt();
-
-			System.out.println("\nDigite o saldo da conta: ");
-			float novoSaldo = leia.nextFloat();
-
-			System.out.println("\nConfirme os Dados ");
-			System.out.println("\nNome: " + novoNome);
-			System.out.println("Agência: " + novaAgencia);
-			System.out.println("Número da Conta: " + numeroConta);
-			System.out.println("Saldo: " + novoSaldo);
-
-			System.out.println("\nOs dados estão corretos: (S/N)");
-			String sn = leia.next();
-
-			if (sn.equalsIgnoreCase("S")) {
-				Conta novaConta = new Conta(novoNome, novaAgencia, numeroConta, novoSaldo, novoTipo);
-
-				contas.add(novaConta);
-
-				System.out.println("Conta criada com sucesso!!\n");
-				confirma = true;
-			}
-		}
-		voltarMenu();
-
-	}
-
-	public static void listarcontas() {
-
-		if (contas.isEmpty()) {
-			System.out.println("\nNão existem contas");
-		} else {
-			for (var c : contas) {
-				System.out.println("\n" + c.getNome());
-
-			}
-		}
-
-	}
-
-	public static void consultarconta() {
-		listarcontas();
-
-		System.out.println("Digite o nome da Conta que deseja consultar: ");
-		String nomeC = leia.next();
-
-		boolean contaEncontrada = false;
-
-		for (Conta c : contas) {
-			if (c.getNome().equalsIgnoreCase(nomeC)) {
-				System.out.println("\n=== CONTA ENCONTRADA ===");
-				System.out.println("Nome: " + c.getNome());
-				System.out.println("Agência: " + c.getAgencia());
-				System.out.println("Número: " + c.getNumeroConta());
-				System.out.println("Saldo: " + c.getSaldo());
-				contaEncontrada = true;
-			}
-			if (!contaEncontrada) {
-				System.out.println("Conta não encontrada!");
-			}
-
-		}
-
-	}
-
-	public static void atualizarconta() {
-		listarcontas();
-
-		System.out.println("Digite o nome da Conta que deseja atualizarr: ");
-		String nomeC = leia.next();
-
-		boolean contaEncontrada = false;
-
-		for (Conta c : contas) {
-			if (c.getNome().equalsIgnoreCase(nomeC)) {
-				System.out.println("Nome: " + c.getNome());
-				System.out.println("Agência: " + c.getAgencia());
-				System.out.println("Número: " + c.getNumeroConta());
-				System.out.println("Saldo: " + c.getSaldo());
-
-				boolean confirmaDados = false;
-				while (!confirmaDados) {
-					System.out.println("Digite o novo nome: ");
-					String novoNome = leia.next();
-
-					System.out.println("Digite a nova agencia: ");
-					int novaAgencia = leia.nextInt();
-
-					System.out.println("Digite o novo numero da conta: ");
-					int novaConta = leia.nextInt();
-
-					System.out.println("Confirme os dados");
-					System.out.println("novo nome: " + novoNome);
-					System.out.println("nova agencia: " + novaAgencia);
-					System.out.println("novo numero da conta: " + novaConta);
-					System.out.println("Os novo dados estão certos? (S/N)");
-					String sn = leia.next();
-
-					if (sn.equalsIgnoreCase("S")) {
-						c.setNome(novoNome);
-						c.setAgencia(novaAgencia);
-						c.setNumeroConta(novaConta);
-						System.out.println("Conta Atualizada");
-						confirmaDados = true;
-
-					}
-
-				}
-
-				contaEncontrada = true;
-			}
-			if (!contaEncontrada) {
-				System.out.println("Conta não encontrada!");
-			}
-
-		}
-
-	}
-
-	public static void voltarMenu() {
-		boolean voltarMenu = false;
-		while (!voltarMenu) {
-			System.out.println("Deseja voltar ao menu? (S/N)");
-			String sn = leia.next();
-
-			if (sn.equalsIgnoreCase("S")) {
-				voltarMenu = true;
+				System.out.println(Cores.TEXT_RED_BOLD + "\nOpção Inválida!\n" + Cores.TEXT_RESET);
+				break;
 			}
 		}
 	}
@@ -256,5 +140,4 @@ public class Menu {
 		System.out.println("https://github.com/Yanrato");
 		System.out.println("*********************************************************");
 	}
-
 }
