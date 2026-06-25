@@ -17,8 +17,6 @@ public abstract class Conta {
 		this.titular = titular;
 		this.saldo = saldo;
 	}
-	
-	//public Conta() {}
 
 	public int getNumero() {
 		return numero;
@@ -98,6 +96,5 @@ public abstract class Conta {
 		System.out.printf("Nome do titular: %s%n", this.titular);
 		System.out.printf("Saldo da conta: %.2f%n", this.saldo);
 	}
-	
 	
 }
