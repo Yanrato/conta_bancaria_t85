@@ -8,9 +8,10 @@ public abstract class Conta {
 	private int tipo;
 	private String titular;
 	private float saldo;
+
 	
 	/* Método Construtor - Gerar as instâncias (Objetos) da Classe*/
-	public Conta(int numero, int agencia, int tipo, String titular, float saldo) {
+		public Conta(int numero, int agencia, int tipo, String titular, float saldo) {
 		this.numero = numero;
 		this.agencia = agencia;
 		this.tipo = tipo;
